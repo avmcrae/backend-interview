@@ -5,9 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -36,6 +38,26 @@ public class DataPrinterServiceTest {
         when(mockDataParser.sortByAscendingIds(textDataFromFile)).thenReturn(expectedStringList);
 
         dataPrinterService.printTextGivenFilename(filename);
+
+        verify(mockOutputFormatter).printFormattedOutput(expectedStringList);
+    }
+
+    // TODO: refactor to avoid using any (use argument captor?)
+    @Test
+    public void shouldMergeTextDataListsWhenMultipleFilenamesArePassedIn() throws FileNotFoundException {
+        String filenameOne = "testfile.json";
+        String filenameTwo = "testfile2.json";
+
+        List<TextData> textDataFromFileOne = asList(new TextData(1, "data one"), new TextData(3, "data three"));
+        List<TextData> textDataFromFileTwo = singletonList(new TextData(2, "data two"));
+
+        when(mockFileLoader.loadDataFromFile(filenameOne)).thenReturn(textDataFromFileOne);
+        when(mockFileLoader.loadDataFromFile(filenameTwo)).thenReturn(textDataFromFileTwo);
+
+        List<String> expectedStringList = asList("data one", "data two", "text three");
+        when(mockDataParser.sortByAscendingIds(any())).thenReturn(expectedStringList);
+
+        dataPrinterService.printMergedTextGivenFilenames(asList(filenameTwo, filenameOne));
 
         verify(mockOutputFormatter).printFormattedOutput(expectedStringList);
     }

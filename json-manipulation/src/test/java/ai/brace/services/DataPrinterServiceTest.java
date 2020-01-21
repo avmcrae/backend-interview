@@ -1,5 +1,6 @@
 package ai.brace.services;
 
+import ai.brace.models.InputFileData;
 import ai.brace.models.TextData;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +36,7 @@ public class DataPrinterServiceTest {
         String filename = "testfile.json";
         List<TextData> textDataFromFile = asList(new TextData(1, "data one"), new TextData(3, "data three"), new TextData(2, "data two"));
         List<String> expectedStringList = asList("data one", "data two", "text three");
-        when(mockFileLoader.loadDataFromFile(filename)).thenReturn(textDataFromFile);
+        when(mockFileLoader.loadDataFromFile(filename)).thenReturn(new InputFileData(textDataFromFile));
         when(mockDataProcessingService.sortByAscendingIds(textDataFromFile)).thenReturn(expectedStringList);
 
         dataPrinterService.printSortedTextGivenFilename(filename);
@@ -76,7 +77,7 @@ public class DataPrinterServiceTest {
         List<TextData> textDataFromFileOne = asList(new TextData(1, "data one"), new TextData(3, "data three"));
         List<TextData> textDataFromFileTwo = singletonList(new TextData(2, "data two"));
 
-        when(mockFileLoader.loadDataFromFile(filenameOne)).thenReturn(textDataFromFileOne);
-        when(mockFileLoader.loadDataFromFile(filenameTwo)).thenReturn(textDataFromFileTwo);
+        when(mockFileLoader.loadDataFromFile(filenameOne)).thenReturn(new InputFileData(textDataFromFileOne));
+        when(mockFileLoader.loadDataFromFile(filenameTwo)).thenReturn(new InputFileData(textDataFromFileTwo));
     }
 }

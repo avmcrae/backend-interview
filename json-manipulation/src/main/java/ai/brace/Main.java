@@ -21,5 +21,9 @@ public class Main {
 
         System.out.println("\nTask three...\n");
         dataPrinterService.printWordFrequencyGivenFilenames(asList("a1.json", "a2.json"));
+
+        System.out.println("\nTask four...\n");
+        JsonUpdateService jsonUpdateService = new JsonUpdateService(fileLoader,validationService);
+        jsonUpdateService.createOutputFileWithLatestDateFromFiles(asList("a1.json", "a2.json"));
     }
 }

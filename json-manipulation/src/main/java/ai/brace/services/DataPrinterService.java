@@ -23,7 +23,7 @@ public class DataPrinterService {
 
     public void printSortedTextGivenFilename(String filename) {
         try {
-            List<TextData> textData = fileLoader.loadDataFromFile(filename);
+            List<TextData> textData = fileLoader.loadDataFromFile(filename).getTextArray();
             printTextSortedById(textData);
         } catch (Exception e) {
             validationService.validate(e);
@@ -55,7 +55,7 @@ public class DataPrinterService {
                         .map(filename -> {
                             {
                                 try {
-                                    return fileLoader.loadDataFromFile(filename);
+                                    return fileLoader.loadDataFromFile(filename).getTextArray();
                                 } catch (FileNotFoundException e) {
                                     throw new RuntimeException(e.getMessage());
                                 }

@@ -24,6 +24,9 @@ project(':json-manipulation') {
         implementation("com.google.code.gson:gson:2.8.5") {
             because 'Gson is threadsafe and its builder pattern is supperior to all others.'
         }
+        testImplementation 'junit:junit:4.12'
+        testImplementation 'org.hamcrest:hamcrest-library:1.3'
+        testImplementation 'org.mockito:mockito-core:2.22.0'
     }
 }
 

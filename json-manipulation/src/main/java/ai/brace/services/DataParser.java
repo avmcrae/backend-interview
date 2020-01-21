@@ -18,13 +18,15 @@ public class DataParser {
     }
 
     public Map<String, Integer> mapWordsByFrequency(List<TextData> textDataList) {
-        return convertTextDataToListOfAllWordsPresent(textDataList)
+        return convertToListOfAllLowercaseWordsPresent(textDataList)
                 .collect(groupingBy(Function.identity(), summingInt(e -> 1)));
     }
 
-    private Stream<String> convertTextDataToListOfAllWordsPresent(List<TextData> textDataList) {
+    private Stream<String> convertToListOfAllLowercaseWordsPresent(List<TextData> textDataList) {
         return textDataList
                 .stream()
-                .flatMap(textData -> Arrays.stream(textData.getTextdata().split(" ")));
+                .flatMap(textData -> Arrays.stream(textData.getTextdata().split(" ")))
+                .map(String::toLowerCase)
+                .map(word -> word.replaceAll("[^a-zA-Z]", ""));
     }
 }

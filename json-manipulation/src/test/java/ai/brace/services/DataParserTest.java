@@ -50,20 +50,34 @@ public class DataParserTest {
     }
 
     @Test
-    public void shouldMapWordsByFrequencyBeingCaseSensitive() {
+    public void shouldMapWordsByFrequencyBeingCaseInsensitive() {
         List<TextData> textDataList = asList(
                 new TextData(3, "Some instance"),
                 new TextData(1, "Of some word"),
-                new TextData(2, "The word instance again.")
+                new TextData(2, "The word instance again")
         );
 
         Map<String, Integer> wordByFrequency = dataParser.mapWordsByFrequency(textDataList);
 
-        assertThat(wordByFrequency.get("Some"), Matchers.equalTo(1));
+        assertThat(wordByFrequency.get("some"), Matchers.equalTo(2));
         assertThat(wordByFrequency.get("instance"), Matchers.equalTo(2));
-        assertThat(wordByFrequency.get("Of"), Matchers.equalTo(1));
+        assertThat(wordByFrequency.get("of"), Matchers.equalTo(1));
         assertThat(wordByFrequency.get("word"), Matchers.equalTo(2));
-        assertThat(wordByFrequency.get("The"), Matchers.equalTo(1));
-        assertThat(wordByFrequency.get("again."), Matchers.equalTo(1));
+        assertThat(wordByFrequency.get("the"), Matchers.equalTo(1));
+        assertThat(wordByFrequency.get("again"), Matchers.equalTo(1));
+    }
+
+    @Test
+    public void shouldFilterOutPunctuationWhenCountingWordFrequency() {
+        List<TextData> textDataList = asList(
+                new TextData(2, "This word?"),
+                new TextData(1, "This word.. again!")
+        );
+
+        Map<String, Integer> wordByFrequency = dataParser.mapWordsByFrequency(textDataList);
+
+        assertThat(wordByFrequency.get("word"), Matchers.equalTo(2));
+        assertThat(wordByFrequency.get("this"), Matchers.equalTo(2));
+        assertThat(wordByFrequency.get("again"), Matchers.equalTo(1));
     }
 }

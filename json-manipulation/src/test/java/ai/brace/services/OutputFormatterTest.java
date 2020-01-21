@@ -6,8 +6,10 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
@@ -37,5 +39,14 @@ public class OutputFormatterTest {
         outputFormatter.printError(error);
 
         assertThat(testErrorStream.toString(), is(String.format("%s\n", error)));
+    }
+
+    @Test
+    public void shouldPrintFormattedMapEntriesByKeyAndValue() {
+        Map<String, Integer> map = Map.of("Word", 1, "two", 2);
+        outputFormatter.printMapValues(map);
+
+        assertThat(testOutputStream.toString(), containsString("(Word) : 1\n"));
+        assertThat(testOutputStream.toString(), containsString("(two) : 2\n"));
     }
 }

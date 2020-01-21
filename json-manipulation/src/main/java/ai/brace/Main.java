@@ -14,9 +14,12 @@ public class Main {
 
         DataPrinterService dataPrinterService = new DataPrinterService(fileLoader, dataParser, outputFormatter, fileValidationService);
         System.out.println("\nTask one...\n");
-        dataPrinterService.printTextGivenFilename("a1.json");
+        dataPrinterService.printSortedTextGivenFilename("a1.json");
 
         System.out.println("\nTask two...\n");
         dataPrinterService.printMergedTextGivenFilenames(asList("a1.json", "a2.json"));
+
+        System.out.println("\nTask three...\n");
+        dataPrinterService.printWordFrequencyGivenFilenames(asList("a1.json", "a2.json"));
     }
 }

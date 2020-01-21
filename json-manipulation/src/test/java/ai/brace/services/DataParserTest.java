@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertThat;
@@ -46,5 +47,23 @@ public class DataParserTest {
         assertThat(sortedText, Matchers.equalTo(
                 asList("Data one", "Data two", "Data three")
         ));
+    }
+
+    @Test
+    public void shouldMapWordsByFrequencyBeingCaseSensitive() {
+        List<TextData> textDataList = asList(
+                new TextData(3, "Some instance"),
+                new TextData(1, "Of some word"),
+                new TextData(2, "The word instance again.")
+        );
+
+        Map<String, Integer> wordByFrequency = dataParser.mapWordsByFrequency(textDataList);
+
+        assertThat(wordByFrequency.get("Some"), Matchers.equalTo(1));
+        assertThat(wordByFrequency.get("instance"), Matchers.equalTo(2));
+        assertThat(wordByFrequency.get("Of"), Matchers.equalTo(1));
+        assertThat(wordByFrequency.get("word"), Matchers.equalTo(2));
+        assertThat(wordByFrequency.get("The"), Matchers.equalTo(1));
+        assertThat(wordByFrequency.get("again."), Matchers.equalTo(1));
     }
 }

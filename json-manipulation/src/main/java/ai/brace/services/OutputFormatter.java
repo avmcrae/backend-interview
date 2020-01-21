@@ -2,6 +2,7 @@ package ai.brace.services;
 
 import java.io.PrintStream;
 import java.util.List;
+import java.util.Map;
 
 public class OutputFormatter {
     private PrintStream outputStream;
@@ -23,5 +24,9 @@ public class OutputFormatter {
 
     public void printError(String errorText) {
         errorStream.println(errorText);
+    }
+
+    public void printMapValues(Map<String, Integer> wordFrequencies) {
+        wordFrequencies.forEach((key, value) -> outputStream.println(String.format("(%s) : %d", key, value)));
     }
 }

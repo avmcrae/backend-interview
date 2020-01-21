@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -37,7 +38,7 @@ public class DataPrinterServiceTest {
         when(mockFileLoader.loadDataFromFile(filename)).thenReturn(textDataFromFile);
         when(mockDataParser.sortByAscendingIds(textDataFromFile)).thenReturn(expectedStringList);
 
-        dataPrinterService.printTextGivenFilename(filename);
+        dataPrinterService.printSortedTextGivenFilename(filename);
 
         verify(mockOutputFormatter).printFormattedOutput(expectedStringList);
     }
@@ -47,12 +48,7 @@ public class DataPrinterServiceTest {
     public void shouldMergeTextDataListsWhenMultipleFilenamesArePassedIn() throws FileNotFoundException {
         String filenameOne = "testfile.json";
         String filenameTwo = "testfile2.json";
-
-        List<TextData> textDataFromFileOne = asList(new TextData(1, "data one"), new TextData(3, "data three"));
-        List<TextData> textDataFromFileTwo = singletonList(new TextData(2, "data two"));
-
-        when(mockFileLoader.loadDataFromFile(filenameOne)).thenReturn(textDataFromFileOne);
-        when(mockFileLoader.loadDataFromFile(filenameTwo)).thenReturn(textDataFromFileTwo);
+        setupMocksForTwoFiles(filenameOne, filenameTwo);
 
         List<String> expectedStringList = asList("data one", "data two", "text three");
         when(mockDataParser.sortByAscendingIds(any())).thenReturn(expectedStringList);
@@ -60,5 +56,27 @@ public class DataPrinterServiceTest {
         dataPrinterService.printMergedTextGivenFilenames(asList(filenameTwo, filenameOne));
 
         verify(mockOutputFormatter).printFormattedOutput(expectedStringList);
+    }
+
+    @Test
+    public void shouldPrintWordByFrequency() throws FileNotFoundException {
+        String filenameOne = "testfile.json";
+        String filenameTwo = "testfile2.json";
+        setupMocksForTwoFiles(filenameOne, filenameTwo);
+
+        Map<String, Integer> expectedMap = Map.of("data", 2, "one", 1, "two", 1, "text", 1, "three", 1);
+        when(mockDataParser.mapWordsByFrequency(any())).thenReturn(expectedMap);
+
+        dataPrinterService.printWordFrequencyGivenFilenames(asList(filenameTwo, filenameOne));
+
+        verify(mockOutputFormatter).printMapValues(expectedMap);
+    }
+
+    private void setupMocksForTwoFiles(String filenameOne, String filenameTwo) throws FileNotFoundException {
+        List<TextData> textDataFromFileOne = asList(new TextData(1, "data one"), new TextData(3, "data three"));
+        List<TextData> textDataFromFileTwo = singletonList(new TextData(2, "data two"));
+
+        when(mockFileLoader.loadDataFromFile(filenameOne)).thenReturn(textDataFromFileOne);
+        when(mockFileLoader.loadDataFromFile(filenameTwo)).thenReturn(textDataFromFileTwo);
     }
 }

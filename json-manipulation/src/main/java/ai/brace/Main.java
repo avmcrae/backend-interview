@@ -8,11 +8,11 @@ public class Main {
 
     public static void main(String[] args) {
         FileLoader fileLoader = new FileLoader();
-        DataParser dataParser = new DataParser();
+        DataProcessingService dataProcessingService = new DataProcessingService();
         OutputFormatter outputFormatter = new OutputFormatter();
-        FileValidationService fileValidationService = new FileValidationService(outputFormatter);
+        ValidationService validationService = new ValidationService(outputFormatter);
 
-        DataPrinterService dataPrinterService = new DataPrinterService(fileLoader, dataParser, outputFormatter, fileValidationService);
+        DataPrinterService dataPrinterService = new DataPrinterService(fileLoader, dataProcessingService, outputFormatter, validationService);
         System.out.println("\nTask one...\n");
         dataPrinterService.printSortedTextGivenFilename("a1.json");
 

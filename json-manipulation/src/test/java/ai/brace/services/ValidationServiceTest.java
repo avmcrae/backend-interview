@@ -9,14 +9,14 @@ import java.io.FileNotFoundException;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class FileValidationServiceTest {
+public class ValidationServiceTest {
     private OutputFormatter outputFormatter;
-    private FileValidationService fileValidationService;
+    private ValidationService validationService;
 
     @Before
     public void setUp() {
         outputFormatter = mock(OutputFormatter.class);
-        fileValidationService = new FileValidationService(outputFormatter);
+        validationService = new ValidationService(outputFormatter);
     }
 
     @Test
@@ -24,7 +24,7 @@ public class FileValidationServiceTest {
         String exceptionMessage = "File Not Found: abc.json";
         Exception e = new FileNotFoundException(exceptionMessage);
 
-        fileValidationService.validate(e);
+        validationService.validate(e);
 
         verify(outputFormatter).printError(String.format("File name not found. Please make sure your file exists and is located in the resources directory. File information: %s", exceptionMessage));
     }
@@ -34,7 +34,7 @@ public class FileValidationServiceTest {
         String exceptionMessage = "Required value textarray";
         Exception e = new JsonSyntaxException(exceptionMessage);
 
-        fileValidationService.validate(e);
+        validationService.validate(e);
 
         verify(outputFormatter).printError(String.format("Invalid JSON format for input file. %s", exceptionMessage));
     }
@@ -44,7 +44,7 @@ public class FileValidationServiceTest {
         String exceptionMessage = "oops!";
         Exception e = new RuntimeException(exceptionMessage);
 
-        fileValidationService.validate(e);
+        validationService.validate(e);
 
         verify(outputFormatter).printError(exceptionMessage);
     }

@@ -2,7 +2,7 @@ package ai.brace.models;
 
 import java.util.List;
 
-public class InputData {
+public class InputFileData {
     private List<TextData> textArray;
 
     public List<TextData> getTextArray() {

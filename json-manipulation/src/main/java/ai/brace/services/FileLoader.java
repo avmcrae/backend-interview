@@ -1,6 +1,6 @@
 package ai.brace.services;
 
-import ai.brace.models.InputData;
+import ai.brace.models.InputFileData;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
@@ -15,8 +15,8 @@ public class FileLoader {
     public List<TextData> loadDataFromFile(String filename) throws FileNotFoundException {
         Gson gson = new Gson();
         JsonReader reader = new JsonReader(new FileReader(getFileFromResources(filename)));
-        InputData inputData = gson.fromJson(reader, InputData.class);
-        return inputData.getTextArray();
+        InputFileData inputFileData = gson.fromJson(reader, InputFileData.class);
+        return inputFileData.getTextArray();
     }
 
     private File getFileFromResources(String filename) {

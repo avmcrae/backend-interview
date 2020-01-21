@@ -4,10 +4,10 @@ import com.google.gson.JsonSyntaxException;
 
 import java.io.FileNotFoundException;
 
-public class FileValidationService {
+public class ValidationService {
     OutputFormatter outputFormatter;
 
-    public FileValidationService(OutputFormatter outputFormatter) {
+    public ValidationService(OutputFormatter outputFormatter) {
         this.outputFormatter = outputFormatter;
     }
 

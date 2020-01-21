@@ -10,15 +10,15 @@ import static java.util.stream.Collectors.toList;
 
 public class DataPrinterService {
     private FileLoader fileLoader;
-    private DataParser dataParser;
+    private DataProcessingService dataProcessingService;
     private OutputFormatter outputFormatter;
-    private FileValidationService fileValidationService;
+    private ValidationService validationService;
 
-    public DataPrinterService(FileLoader fileLoader, DataParser dataParser, OutputFormatter outputFormatter, FileValidationService fileValidationService) {
+    public DataPrinterService(FileLoader fileLoader, DataProcessingService dataProcessingService, OutputFormatter outputFormatter, ValidationService validationService) {
         this.fileLoader = fileLoader;
-        this.dataParser = dataParser;
+        this.dataProcessingService = dataProcessingService;
         this.outputFormatter = outputFormatter;
-        this.fileValidationService = fileValidationService;
+        this.validationService = validationService;
     }
 
     public void printSortedTextGivenFilename(String filename) {
@@ -26,7 +26,7 @@ public class DataPrinterService {
             List<TextData> textData = fileLoader.loadDataFromFile(filename);
             printTextSortedById(textData);
         } catch (Exception e) {
-            fileValidationService.validate(e);
+            validationService.validate(e);
         }
     }
 
@@ -35,17 +35,17 @@ public class DataPrinterService {
             List<TextData> dataFromAllFiles = getTextDataForListOfFiles(filenames);
             printTextSortedById(dataFromAllFiles);
         } catch (Exception e) {
-            fileValidationService.validate(e);
+            validationService.validate(e);
         }
     }
 
     public void printWordFrequencyGivenFilenames(List<String> filenames) {
         try {
             List<TextData> textData = getTextDataForListOfFiles(filenames);
-            Map<String, Integer> wordFrequencies = dataParser.mapWordsByFrequency(textData);
+            Map<String, Integer> wordFrequencies = dataProcessingService.mapWordsByFrequency(textData);
             outputFormatter.printMapValues(wordFrequencies);
         } catch (Exception e) {
-            fileValidationService.validate(e);
+            validationService.validate(e);
         }
     }
 
@@ -64,7 +64,7 @@ public class DataPrinterService {
     }
 
     private void printTextSortedById(List<TextData> textData) {
-        List<String> sortedText = dataParser.sortByAscendingIds(textData);
+        List<String> sortedText = dataProcessingService.sortByAscendingIds(textData);
         outputFormatter.printFormattedOutput(sortedText);
     }
 }

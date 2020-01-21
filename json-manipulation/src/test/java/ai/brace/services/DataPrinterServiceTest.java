@@ -14,20 +14,20 @@ import static org.mockito.Mockito.*;
 
 public class DataPrinterServiceTest {
 
-    private DataParser mockDataParser;
+    private DataProcessingService mockDataProcessingService;
     private FileLoader mockFileLoader;
     private OutputFormatter mockOutputFormatter;
-    private FileValidationService mockFileValidationService;
+    private ValidationService mockValidationService;
 
     private DataPrinterService dataPrinterService;
 
     @Before
     public void setUp() {
-        mockDataParser = mock(DataParser.class);
+        mockDataProcessingService = mock(DataProcessingService.class);
         mockFileLoader = mock(FileLoader.class);
         mockOutputFormatter = mock(OutputFormatter.class);
-        mockFileValidationService = mock(FileValidationService.class);
-        dataPrinterService = new DataPrinterService(mockFileLoader, mockDataParser, mockOutputFormatter, mockFileValidationService);
+        mockValidationService = mock(ValidationService.class);
+        dataPrinterService = new DataPrinterService(mockFileLoader, mockDataProcessingService, mockOutputFormatter, mockValidationService);
     }
 
     @Test
@@ -36,7 +36,7 @@ public class DataPrinterServiceTest {
         List<TextData> textDataFromFile = asList(new TextData(1, "data one"), new TextData(3, "data three"), new TextData(2, "data two"));
         List<String> expectedStringList = asList("data one", "data two", "text three");
         when(mockFileLoader.loadDataFromFile(filename)).thenReturn(textDataFromFile);
-        when(mockDataParser.sortByAscendingIds(textDataFromFile)).thenReturn(expectedStringList);
+        when(mockDataProcessingService.sortByAscendingIds(textDataFromFile)).thenReturn(expectedStringList);
 
         dataPrinterService.printSortedTextGivenFilename(filename);
 
@@ -51,7 +51,7 @@ public class DataPrinterServiceTest {
         setupMocksForTwoFiles(filenameOne, filenameTwo);
 
         List<String> expectedStringList = asList("data one", "data two", "text three");
-        when(mockDataParser.sortByAscendingIds(any())).thenReturn(expectedStringList);
+        when(mockDataProcessingService.sortByAscendingIds(any())).thenReturn(expectedStringList);
 
         dataPrinterService.printMergedTextGivenFilenames(asList(filenameTwo, filenameOne));
 
@@ -65,7 +65,7 @@ public class DataPrinterServiceTest {
         setupMocksForTwoFiles(filenameOne, filenameTwo);
 
         Map<String, Integer> expectedMap = Map.of("data", 2, "one", 1, "two", 1, "text", 1, "three", 1);
-        when(mockDataParser.mapWordsByFrequency(any())).thenReturn(expectedMap);
+        when(mockDataProcessingService.mapWordsByFrequency(any())).thenReturn(expectedMap);
 
         dataPrinterService.printWordFrequencyGivenFilenames(asList(filenameTwo, filenameOne));
 

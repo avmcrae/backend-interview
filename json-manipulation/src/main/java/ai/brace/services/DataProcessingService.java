@@ -4,12 +4,11 @@ import ai.brace.models.TextData;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
 
-public class DataParser {
+public class DataProcessingService {
     public List<String> sortByAscendingIds(List<TextData> textData) {
         return textData.stream()
                 .sorted(Comparator.comparing(TextData::getId))

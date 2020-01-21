@@ -11,12 +11,12 @@ import java.util.Map;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertThat;
 
-public class DataParserTest {
-    DataParser dataParser;
+public class DataProcessingServiceTest {
+    DataProcessingService dataProcessingService;
 
     @Before
     public void setUp() throws Exception {
-        dataParser = new DataParser();
+        dataProcessingService = new DataProcessingService();
     }
 
     @Test
@@ -27,7 +27,7 @@ public class DataParserTest {
                 new TextData(2, "Data two")
         );
 
-        List<String> sortedText = dataParser.sortByAscendingIds(textDataList);
+        List<String> sortedText = dataProcessingService.sortByAscendingIds(textDataList);
 
         assertThat(sortedText, Matchers.containsInAnyOrder(
                 "Data one", "Data two", "Data three"
@@ -42,7 +42,7 @@ public class DataParserTest {
                 new TextData(2, "Data two")
         );
 
-        List<String> sortedText = dataParser.sortByAscendingIds(textDataList);
+        List<String> sortedText = dataProcessingService.sortByAscendingIds(textDataList);
 
         assertThat(sortedText, Matchers.equalTo(
                 asList("Data one", "Data two", "Data three")
@@ -57,7 +57,7 @@ public class DataParserTest {
                 new TextData(2, "The word instance again")
         );
 
-        Map<String, Integer> wordByFrequency = dataParser.mapWordsByFrequency(textDataList);
+        Map<String, Integer> wordByFrequency = dataProcessingService.mapWordsByFrequency(textDataList);
 
         assertThat(wordByFrequency.get("some"), Matchers.equalTo(2));
         assertThat(wordByFrequency.get("instance"), Matchers.equalTo(2));
@@ -74,7 +74,7 @@ public class DataParserTest {
                 new TextData(1, "This word.. again!")
         );
 
-        Map<String, Integer> wordByFrequency = dataParser.mapWordsByFrequency(textDataList);
+        Map<String, Integer> wordByFrequency = dataProcessingService.mapWordsByFrequency(textDataList);
 
         assertThat(wordByFrequency.get("word"), Matchers.equalTo(2));
         assertThat(wordByFrequency.get("this"), Matchers.equalTo(2));

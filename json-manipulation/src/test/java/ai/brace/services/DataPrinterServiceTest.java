@@ -5,12 +5,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
-import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class DataPrinterServiceTest {
@@ -18,6 +16,7 @@ public class DataPrinterServiceTest {
     private DataParser mockDataParser;
     private FileLoader mockFileLoader;
     private OutputFormatter mockOutputFormatter;
+    private FileValidationService mockFileValidationService;
 
     private DataPrinterService dataPrinterService;
 
@@ -26,7 +25,8 @@ public class DataPrinterServiceTest {
         mockDataParser = mock(DataParser.class);
         mockFileLoader = mock(FileLoader.class);
         mockOutputFormatter = mock(OutputFormatter.class);
-        dataPrinterService = new DataPrinterService(mockFileLoader, mockDataParser, mockOutputFormatter);
+        mockFileValidationService = mock(FileValidationService.class);
+        dataPrinterService = new DataPrinterService(mockFileLoader, mockDataParser, mockOutputFormatter, mockFileValidationService);
     }
 
     @Test

@@ -13,12 +13,14 @@ import static org.junit.Assert.*;
 
 public class OutputFormatterTest {
     private ByteArrayOutputStream testOutputStream;
+    private ByteArrayOutputStream testErrorStream;
     private OutputFormatter outputFormatter;
 
     @Before
     public void setUp() {
         testOutputStream = new ByteArrayOutputStream();
-        outputFormatter = new OutputFormatter(new PrintStream(testOutputStream));
+        testErrorStream = new ByteArrayOutputStream();
+        outputFormatter = new OutputFormatter(new PrintStream(testOutputStream), new PrintStream(testErrorStream));
     }
 
     @Test
@@ -27,5 +29,13 @@ public class OutputFormatterTest {
         outputFormatter.printFormattedOutput(inputStrings);
 
         assertThat(testOutputStream.toString(), is("an input one\nanother input\n"));
+    }
+
+    @Test
+    public void shouldPrintToErrorStreamWhenPrintingAnError() {
+        String error = "something went wrong";
+        outputFormatter.printError(error);
+
+        assertThat(testErrorStream.toString(), is(String.format("%s\n", error)));
     }
 }
